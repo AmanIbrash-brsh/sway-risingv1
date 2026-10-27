@@ -56,25 +56,21 @@
 | `Super+S` / `Super+W` / `Super+E` | layout: stacking / tabbed / split |
 | `Alt+Shift` | переключение раскладки (us / ru) |
 
-## Swaylock-effects (необязательно)
-
-В Fedora пакета нет, он есть в COPR `pheeef/swaylock-effects`. `dnf swap` не проходит из-за зависимости `sway-config-fedora`, поэтому бинарник ставится рядом с системным swaylock и ничего не заменяет:
+## Установка одной командой (Fedora)
 
 ```sh
-mkdir /tmp/slfx && cd /tmp/slfx && dnf download swaylock-effects   # после dnf copr enable pheeef/swaylock-effects
-rpm2cpio swaylock-effects-*.x86_64.rpm | cpio -idm
-install -Dm755 usr/bin/swaylock ~/.local/bin/swaylock-effects
+git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising
+./install.sh
 ```
 
-## Установка
+Скрипт:
+1. ставит недостающие пакеты через `dnf` (swayfx берёт из COPR `swayfx/swayfx`, шрифты, waybar, rofi и остальное);
+2. кладёт `swaylock-effects` из COPR `pheeef/swaylock-effects` в `~/.local/bin` рядом с системным swaylock и ничего не заменяет (`dnf swap` не проходит из-за `sway-config-fedora`);
+3. **делает бэкап** ваших текущих конфигов в `~/rice-backup-<дата>`;
+4. копирует конфиги и обои, проверяет конфиг (`sway -C`) и перезагружает sway.
 
-Нужны: swayfx, waybar, rofi, dunst, swaylock, swayidle, kitty, grim, slurp, wl-clipboard, playerctl, brightnessctl, JetBrains Mono, Font Awesome 6.
+Можно запускать повторно. Перед подключением каждого COPR скрипт спрашивает подтверждение.
 
-```sh
-cp -r .config/* ~/.config/
-mkdir -p ~/Pictures/wallpapers && cp wallpapers/* ~/Pictures/wallpapers/
-ln -sf ~/Pictures/wallpapers/original.jpg ~/Pictures/wallpapers/current
-swaymsg reload
-```
+Флаги: `--yes` (не спрашивать), `--no-packages` (только конфиги), `--no-lock-effects`.
 
 Waybar запускает сам sway (`/usr/share/sway/config.d/90-bar.conf`). Руками его запускать не нужно, иначе будет два бара. Перезагрузка стиля: `pkill -SIGUSR2 waybar`.
