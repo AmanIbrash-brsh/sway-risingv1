@@ -1,0 +1,25 @@
+image=~/Pictures/wallpapers/mono-glow.jpg
+scaling=fill
+font=JetBrains Mono
+indicator-radius=90
+indicator-thickness=5
+inside-color=0c0c0c99
+inside-clear-color=0c0c0c99
+inside-ver-color=0c0c0c99
+inside-wrong-color=0c0c0c99
+ring-color=e8e8e8
+ring-clear-color=8c8c8c
+ring-ver-color=ffffff
+ring-wrong-color=ff5c5c
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
+key-hl-color=ffffff
+bs-hl-color=ff5c5c
+text-color=e8e8e8
+text-clear-color=e8e8e8
+text-ver-color=e8e8e8
+text-wrong-color=ff5c5c
+show-failed-attempts

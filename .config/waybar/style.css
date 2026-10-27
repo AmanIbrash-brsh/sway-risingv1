@@ -1,0 +1,67 @@
+@define-color base     #0c0c0c;
+@define-color surface0 #1c1c1c;
+@define-color surface1 #2e2e2e;
+@define-color text     #e8e8e8;
+@define-color subtext  #8c8c8c;
+@define-color red      #ff5c5c;
+@define-color yellow   #d9c99a;
+
+* {
+    font-family: "JetBrains Mono", "Font Awesome 6 Free";
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar { background: transparent; color: @text; }
+
+/* glass pills: translucent so swayfx blur shows through */
+#workspaces, #window, #clock, #language, #cpu, #memory, #pulseaudio, #network, #battery,
+#tray, #mode, #custom-power, #backlight, #idle_inhibitor, #temperature, #mpris {
+    background: alpha(@base, 0.55);
+    border: 1px solid alpha(@text, 0.08);
+    border-radius: 14px;
+    padding: 0 12px;
+    margin: 0;
+    color: @text;
+    transition: all 0.25s ease;
+}
+
+#workspaces { padding: 0 4px; }
+#workspaces button {
+    color: @subtext;
+    padding: 0 9px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    background: transparent;
+    transition: all 0.25s ease;
+}
+#workspaces button:hover { background: alpha(@text, 0.12); color: @text; box-shadow: none; text-shadow: none; }
+#workspaces button.focused { background: alpha(@text, 0.92); color: @base; padding: 0 16px; box-shadow: 0 0 12px alpha(@text, 0.35); }
+#workspaces button.urgent { background: @red; color: @base; }
+
+#mode { background: @text; color: @base; font-weight: bold; }
+#window { color: @subtext; }
+window#waybar.empty #window { background: transparent; border-color: transparent; }
+#clock { font-weight: bold; padding: 0 16px; }
+#mpris { color: @subtext; }
+
+#cpu:hover, #memory:hover, #pulseaudio:hover, #network:hover, #battery:hover,
+#language:hover, #backlight:hover, #idle_inhibitor:hover, #temperature:hover, #mpris:hover {
+    background: alpha(@text, 0.14);
+    border-color: alpha(@text, 0.25);
+}
+#idle_inhibitor.activated { background: @text; color: @base; }
+#network.disconnected { color: @red; }
+#battery.charging { color: @text; }
+#battery.warning:not(.charging) { color: @yellow; }
+#battery.critical:not(.charging) { color: @red; animation: blink 1s steps(2) infinite; }
+#temperature.critical { color: @red; }
+#custom-power { padding: 0 14px; }
+#custom-power:hover { background: @red; color: @base; border-color: @red; }
+
+@keyframes blink { to { background: alpha(@red, 0.5); } }
+
+tooltip { background: alpha(@base, 0.85); border: 1px solid alpha(@text, 0.12); border-radius: 12px; }
+tooltip label { color: @text; padding: 2px; }
