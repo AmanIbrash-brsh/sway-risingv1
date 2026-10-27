@@ -65,3 +65,9 @@ window#waybar.empty #window { background: transparent; border-color: transparent
 
 tooltip { background: alpha(@base, 0.85); border: 1px solid alpha(@text, 0.12); border-radius: 12px; }
 tooltip label { color: @text; padding: 2px; }
+
+/* collapsible hardware drawer */
+#hw { background: alpha(@base, 0.55); border: 1px solid alpha(@text, 0.08); border-radius: 14px; padding: 0 4px; transition: all 0.25s ease; }
+#hw:hover { border-color: alpha(@text, 0.25); }
+#hw #custom-hw, #hw #temperature, #hw #cpu, #hw #memory { background: transparent; border: none; box-shadow: none; }
+#custom-hw { color: @subtext; }
