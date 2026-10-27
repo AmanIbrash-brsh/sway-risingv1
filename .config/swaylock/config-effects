@@ -1,0 +1,33 @@
+# Used only by swaylock-effects (see sway/lock.sh); stock swaylock reads ./config
+screenshots
+effect-blur=9x5
+effect-vignette=0.5:0.5
+fade-in=0.25
+clock
+timestr=%H:%M
+datestr=%A, %d %B
+indicator
+indicator-radius=100
+indicator-thickness=5
+indicator-caps-lock
+font=JetBrains Mono
+inside-color=0c0c0c88
+inside-clear-color=0c0c0c88
+inside-ver-color=0c0c0c88
+inside-wrong-color=0c0c0c88
+ring-color=e8e8e8
+ring-clear-color=8c8c8c
+ring-ver-color=ffffff
+ring-wrong-color=ff5c5c
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
+key-hl-color=ffffff
+bs-hl-color=ff5c5c
+text-color=e8e8e8
+text-clear-color=e8e8e8
+text-ver-color=e8e8e8
+text-wrong-color=ff5c5c
+show-failed-attempts

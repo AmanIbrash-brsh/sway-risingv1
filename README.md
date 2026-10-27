@@ -25,7 +25,7 @@
 - **Шпаргалка по хоткеям** прямо из конфига.
 - **Режим производительности:** переключатель blur и теней.
 - **swayidle:** блокировка через 5 мин, экран гаснет через 10 мин.
-- **Swaylock** с обоями и полупрозрачным индикатором.
+- **Swaylock-effects:** размытый скриншот экрана, виньетка, часы и дата. Запускается через `sway/lock.sh`. Если swaylock-effects не установлен, используется обычный swaylock.
 
 ## Важные хоткеи (`Super` = Mod4)
 
@@ -55,6 +55,16 @@
 | `Super+R` | режим изменения размера (`H/J/K/L`, `Esc`) |
 | `Super+S` / `Super+W` / `Super+E` | layout: stacking / tabbed / split |
 | `Alt+Shift` | переключение раскладки (us / ru) |
+
+## Swaylock-effects (необязательно)
+
+В Fedora пакета нет, он есть в COPR `pheeef/swaylock-effects`. `dnf swap` не проходит из-за зависимости `sway-config-fedora`, поэтому бинарник ставится рядом с системным swaylock и ничего не заменяет:
+
+```sh
+mkdir /tmp/slfx && cd /tmp/slfx && dnf download swaylock-effects   # после dnf copr enable pheeef/swaylock-effects
+rpm2cpio swaylock-effects-*.x86_64.rpm | cpio -idm
+install -Dm755 usr/bin/swaylock ~/.local/bin/swaylock-effects
+```
 
 ## Установка
 
