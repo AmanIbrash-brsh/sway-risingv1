@@ -20,4 +20,6 @@ entry { placeholder: "Search..."; placeholder-color: @subtext; }
 listview { lines: 8; scrollbar: false; spacing: 4px; fixed-height: true; }
 element { padding: 9px 14px; border-radius: 14px; spacing: 10px; }
 element selected { background-color: rgba(232,232,232,0.92); text-color: #0c0c0c; }
+element-text { text-color: inherit; }
+element selected element-text { text-color: #0c0c0c; }
 element-icon { size: 1.4em; }

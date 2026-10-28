@@ -16,6 +16,8 @@
 | `.config/swaylock` | локскрин с обоями |
 | `.config/kitty/kitty.conf` | прозрачность терминала, чтобы был виден blur |
 | `.config/sway/config.d/40-bar.conf` | запуск waybar (без `sway-config-fedora`) |
+| `.config/sway/config.d/05-outputs.conf` | расположение и масштаб мониторов (ноутбук слева, HDMI справа; подгоните под своё железо) |
+| `.config/sway/config.d/06-mouse.conf` | чувствительность мыши |
 | `wallpapers/` | `original.jpg` (основные), `mono-glow`, `mono-orb`, `mono-smoke`, `mono-grid`, `mono-dusk` |
 
 ### Что было добавлено
@@ -56,7 +58,7 @@
 | `Super+C` | центрировать плавающее окно |
 | `Super+R` | режим изменения размера (`H/J/K/L`, `Esc`) |
 | `Super+S` / `Super+W` / `Super+E` | layout: stacking / tabbed / split |
-| `Alt+Shift` | переключение раскладки (us / ru) |
+| `Alt+Shift` | переключение раскладки (us / ru); все хоткеи работают и на русской раскладке (`bindsym --to-code`, первой в `xkb_layout` должна стоять `us`) |
 
 ## Установка одной командой (Fedora)
 
