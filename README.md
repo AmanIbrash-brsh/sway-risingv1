@@ -7,7 +7,7 @@
 Нужны: Fedora (лучше Workstation), `git`, интернет, `sudo`.
 
 ```sh
-git clone <URL-репозитория> sway-rising && cd sway-rising
+git clone https://git.ibrash.duckdns.org/aibrash/sway-rising.git sway-rising && cd sway-rising
 ./install.sh --dry-run     # необязательно: показать, что будет сделано, ничего не меняя
 ./install.sh
 ```
