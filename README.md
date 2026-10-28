@@ -1,44 +1,46 @@
 # sway-rising
 
-Монохромный «стеклянный» райс для **SwayFX 0.6**: матовый blur, скруглённые углы, мягкое свечение у активного окна и **DankMaterialShell** (бар, лаунчер, панель управления с Wi-Fi / Bluetooth / VPN, уведомления) поверх sway.
+Монохромный «стеклянный» райс для **SwayFX** на Fedora: blur, скруглённые углы, мягкое свечение у активного окна и **DankMaterialShell** (бар, лаунчер, панель управления с Wi-Fi / Bluetooth / VPN, уведомления, блокировка, обои) поверх sway.
 
 ## Что внутри
 
 | Путь | Что это |
 |---|---|
-| `.config/sway/config.d/10-appearance.conf` | цвета, рамки, отступы, обои, swayidle (через `idle.sh`) |
-| `.config/sway/config.d/20-swayfx.conf` | эффекты SwayFX: blur, тени, скругления, прозрачность, layer_effects |
-| `.config/sway/config.d/30-workflow.conf` | хоткеи и помощники (scratchpad, скриншоты, обои, шпаргалка) |
-| `.config/sway/*.sh` | `wallpaper.sh`, `screenshot-menu.sh`, `screenshot.sh`, `cheatsheet.sh`, `idle.sh`, `mirror.sh` |
-| `.config/waybar` | стеклянные плашки, выдвижной блок железа, mpris, яркость, idle-inhibitor |
-| `.config/rofi` | полупрозрачная тема + меню выключения |
-| `.config/swaync` | центр уведомлений и панель управления (`Super+N`): плитки Wi-Fi / Bluetooth / VPN, громкость, яркость, плеер |
-| `.config/sway/{wifi,bt,vpn}-menu.sh` | rofi-меню для плиток панели (подключение, пароль, спаривание) |
-| `.config/dunst` | старые уведомления (не используются, оставлены для отката) |
-| `.config/swaylock` | локскрин с обоями |
-| `.config/kitty/kitty.conf` | прозрачность терминала, чтобы был виден blur |
-| `.config/sway/config.d/50-dms.conf` | запуск DMS, blur для его слоёв, хоткей буфера обмена, медиаклавиши (громкость, яркость, плеер) |
-| `home/.tmux.conf` | tmux: префикс `Ctrl+A`, сплиты `|` и `-`, нумерация с 1, тема Tokyo Night |
-| `home/.oh-my-zsh/custom/sysadmin.zsh` | алиасы сисадмина (`ports`, `jce`, `dnfu`, `tm`) и автоподключение fzf / zoxide / eza, если установлены |
-| `.config/sway/config.d/60-autostart.conf` | автозапуск Nextcloud, Remmina и Geary (xdg-autostart в sway не работает) |
-| `.config/dms/settings.json` | настройки DMS: виджеты бара (раскладка, VPN, температура, приватность), шрифты, панель управления |
-| `.config/sway/config.d/40-bar.conf.off` | старый запуск waybar (отключён; переименуйте в `.conf`, чтобы вернуть waybar вместо DMS) |
-| `.config/sway/config.d/05-outputs.conf` | расположение и масштаб мониторов (ноутбук слева, HDMI справа; подгоните под своё железо) |
+| `.config/sway/config` | базовый конфиг sway (раскладки us/ru, хоткеи, `--to-code`: хоткеи работают и на русской раскладке) |
+| `.config/sway/config.d/00-session.conf` | окружение и `sway-session.target`, чтобы работали порталы (демонстрация экрана, диалоги) |
+| `.config/sway/config.d/05-outputs.conf.example` | пример раскладки мониторов; свой файл создаёт `outputs-setup.sh` |
 | `.config/sway/config.d/06-mouse.conf` | чувствительность мыши |
-| `wallpapers/` | `original.jpg` (основные), `mono-glow`, `mono-orb`, `mono-smoke`, `mono-grid`, `mono-dusk` |
+| `.config/sway/config.d/10-appearance.conf` | цвета рамок и вкладок, отступы, тачпад, правила окон, idle |
+| `.config/sway/config.d/20-swayfx.conf`, `21-dms-effects.conf` | эффекты SwayFX: blur, тени, скругления, прозрачность; blur для слоёв DMS |
+| `.config/sway/config.d/30-workflow.conf` | scratchpad-терминал, скриншоты, шпаргалка, режим производительности |
+| `.config/sway/config.d/50-dms.conf` | запуск DMS, буфер обмена, медиаклавиши (громкость, яркость, плеер) |
+| `.config/sway/config.d/60-autostart.conf` | автозапуск Nextcloud, Remmina и Geary (xdg-autostart в sway не работает) |
+| `.config/sway/screenshot.sh` | все режимы скриншотов (см. ниже) |
+| `.config/sway/{lock,idle,cheatsheet}.sh` | блокировка (DMS, запасной swaylock), swayidle, шпаргалка по хоткеям |
+| `.config/sway/outputs-setup.sh`, `doctor.sh` | настройка мониторов под новое железо; проверка здоровья системы |
+| `.config/dms/settings.json` | настройки DMS: виджеты бара (раскладка, VPN, температура, приватность), шрифты, панель управления |
+| `.config/kitty/kitty.conf` | JetBrains Mono, палитра Tokyo Night, прозрачность, вкладки и сплиты |
+| `.config/swappy/config` | редактор скриншотов (стрелки, текст, размытие) |
+| `.config/swaylock/` | запасная блокировка, если DMS не запущен |
+| `home/.tmux.conf`, `home/.zshrc`, `home/.oh-my-zsh/custom/sysadmin.zsh` | tmux, zsh, алиасы сисадмина; fzf / zoxide / eza подключаются сами |
+| `wallpapers/` | любимые обои (кладутся в `~/.local/share/backgrounds`, дальше обоями управляет DMS) |
 
-### Что было добавлено
-- **Blur 4 прохода** + brightness / contrast / saturation, шум; свечение у фокусного окна, тёмная тень у остальных.
-- **Waybar:** стеклянные плашки, растягивающийся активный воркспейс, модули mpris, backlight, temperature, idle-inhibitor, выдвижной блок `⚙` (температура / CPU / RAM), мигание при низком заряде.
-- **Rofi и swaync** сделаны полупрозрачными, чтобы под ними был виден blur.
-- **Выбор обоев** с превью (rofi), 6 обоев в наборе.
-- **Меню скриншотов** (область / экран, в буфер / в файл).
-- **Шпаргалка по хоткеям** прямо из конфига.
-- **Режим производительности:** переключатель blur и теней.
-- **swayidle:** блокировка через 5 мин, экран гаснет через 10 мин.
-- **Swaylock-effects:** размытый скриншот экрана, виньетка, часы и дата. Запускается через `sway/lock.sh`: сначала экран блокировки DMS, а если DMS не запущен, то swaylock-effects или обычный swaylock.
+Обои, уведомления, панель управления, лаунчер и бар обслуживает DMS. Waybar, swaync, dunst, rofi и сопутствующие скрипты убраны из репозитория.
 
-## Важные хоткеи (`Super` = Mod4)
+## Скриншоты
+
+Все снимки сохраняются в `~/Pictures/Screenshots` **и** копируются в буфер обмена, DMS показывает уведомление.
+
+| Клавиши | Что снимает |
+|---|---|
+| `Print` или `Super+Shift+S` | область: выделить мышью, `Enter` или пробел подтверждает, `Esc` отменяет |
+| `Shift+Print` | весь текущий монитор |
+| `Ctrl+Print` | активное окно |
+| `Alt+Print` | прокручиваемая область одним длинным снимком (`Enter` завершает) |
+| `Super+Print` | повторить прошлую область |
+| `Ctrl+Shift+Print` | область с редактором swappy (стрелки, текст, размытие) |
+
+## Хоткеи (`Super` = Mod4)
 
 | Клавиши | Действие |
 |---|---|
@@ -49,13 +51,9 @@
 | `Super+Shift+V` | история буфера обмена |
 | `Super+Shift+Q` | закрыть окно |
 | `Super+Shift+C` | перезагрузить конфиг |
-| `Super+Shift+E` | выйти из sway |
+| `Super+Shift+E` / `Super+Shift+P` | меню выключения DMS |
 | `Super+Shift+X` | заблокировать экран |
-| `Super+Shift+P` | меню выключения |
 | `Super+F1` | **шпаргалка по всем хоткеям** |
-| `Super+Shift+W` | выбор обоев |
-| `Super+Shift+S` | меню скриншотов |
-| `Shift+Print` / `Super+Print` | область → буфер / область → файл |
 | `Super+Shift+B` | режим производительности (blur + тени) |
 | ``Super+` `` | выпадающий терминал (scratchpad) |
 | `Super+H/J/K/L` | фокус влево / вниз / вверх / вправо |
@@ -68,23 +66,37 @@
 | `Super+C` | центрировать плавающее окно |
 | `Super+R` | режим изменения размера (`H/J/K/L`, `Esc`) |
 | `Super+S` / `Super+W` / `Super+E` | layout: stacking / tabbed / split |
-| `Alt+Shift` | переключение раскладки (us / ru); все хоткеи работают и на русской раскладке (`bindsym --to-code`, первой в `xkb_layout` должна стоять `us`) |
+| `Alt+Shift` | переключение раскладки (us / ru); первой в `xkb_layout` должна стоять `us` |
 
-## Установка одной командой (Fedora)
+## Новый ноутбук за одну команду (Fedora)
+
+На свежей Fedora (Workstation или любой вариант с `git`):
 
 ```sh
-git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising
-./install.sh
+git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising && ./install.sh
 ```
 
-Скрипт:
-1. ставит недостающие пакеты через `dnf` (swayfx берёт из COPR `swayfx/swayfx`, шрифты, waybar, rofi и остальное);
-2. кладёт `swaylock-effects` из COPR `pheeef/swaylock-effects` в `~/.local/bin` рядом с системным swaylock и ничего не заменяет (`dnf swap` не проходит из-за `sway-config-fedora`);
-3. **делает бэкап** ваших текущих конфигов в `~/rice-backup-<дата>`;
-4. копирует конфиги и обои, проверяет конфиг (`sway -C`) и перезагружает sway.
+Репозиторий клонируется по ssh, поэтому на новой машине сначала нужен ваш ключ (`~/.ssh/id_ed25519`) или ключ, добавленный на git-сервер.
 
-Можно запускать повторно. Перед подключением каждого COPR скрипт спрашивает подтверждение.
+Скрипт спрашивает подтверждение перед каждым COPR и больше ни о чём не спрашивает. Для полностью автоматического режима: `./install.sh --yes`.
 
-Флаги: `--yes` (не спрашивать), `--no-packages` (только конфиги), `--no-lock-effects`.
+Что он делает:
+1. Ставит пакеты через `dnf`: сессия sway (`sway-systemd`, порталы), kitty, swaylock/swayidle, grim, swappy (аннотации скриншотов), шрифты JetBrains Mono и Font Awesome, тема `adw-gtk3`.
+2. Подключает COPR `swayfx/swayfx` и `avengemedia/dms` и ставит SwayFX и DankMaterialShell.
+3. Ставит CLI: zsh, tmux, fzf, zoxide, eza, bat, fd, ripgrep, ncdu, fastfetch, lazygit (бинарник с проверкой суммы), клонирует oh-my-zsh с плагинами. Опция `--with-tools` добавляет nmap, tcpdump, mtr, jq, btop, ansible.
+4. **Делает бэкап** ваших конфигов в `~/rice-backup-<дата>` и копирует конфиги, обои (в `~/.local/share/backgrounds`), tmux и алиасы. Ваш `~/.zshrc` не трогает (его заменит только `--force-shell`).
+5. Включает тему `adw-gtk3-dark` и проверяет конфиг (`sway -C`).
 
-DMS запускается из `config.d/50-dms.conf`. Руками его запускать не нужно. Диагностика: `dms doctor`. Waybar, swaync и dunst в репозитории оставлены как запасной вариант и в `install.sh` больше не ставятся.
+После установки: выйти и выбрать на экране входа сессию **Sway**. Внутри сессии один раз выполнить
+
+```sh
+~/.config/sway/outputs-setup.sh   # раскладка и масштаб мониторов (ноутбук слева, внешний справа)
+```
+
+Файл раскладки мониторов намеренно не копируется: на другом железе другие имена выходов. В репозитории лежит только пример `05-outputs.conf.example`.
+
+Проверка здоровья в любой момент: `./install.sh --check` (то же самое: `~/.config/sway/doctor.sh`). Показывает, что установлено, что работает, а что нет (DMS, порталы, шрифты, инструменты, раскладка мониторов).
+
+Флаги: `--yes`, `--dry-run` (показать действия, ничего не менять), `--check`, `--no-packages`, `--no-dms`, `--no-shell`, `--with-tools`, `--force-shell`. Можно запускать повторно.
+
+DMS запускается из `config.d/50-dms.conf`, руками его запускать не нужно. Диагностика самого DMS: `dms doctor`.

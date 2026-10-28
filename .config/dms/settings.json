@@ -131,7 +131,7 @@
     }
   ],
   "configVersion": 42,
-  "popupTransparency": 0.86,
+  "popupTransparency": 0.95,
   "fontFamily": "JetBrains Mono Medium",
   "audioVisualizerEnabled": true,
   "scrollTitleEnabled": true,
@@ -267,5 +267,7 @@
     }
   ],
   "monoFontFamily": "JetBrains Mono",
-  "displayFontFamily": "JetBrains Mono"
+  "displayFontFamily": "JetBrains Mono",
+  "fontWeight": 300,
+  "fontScale": 1
 }
