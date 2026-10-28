@@ -98,7 +98,7 @@ install_configs() {
     say "Backing up existing configs to $BACKUP"
     mkdir -p "$BACKUP"
     local d
-    for d in sway waybar rofi dunst swaync swaylock kitty quickshell; do
+    for d in sway waybar rofi dunst swaync swaylock kitty dms; do
         [ -e "$CFG/$d" ] && cp -a "$CFG/$d" "$BACKUP/"
     done
 
