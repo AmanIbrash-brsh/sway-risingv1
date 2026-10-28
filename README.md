@@ -19,7 +19,8 @@
 | `.config/sway/{lock,idle,cheatsheet}.sh` | блокировка (DMS, запасной swaylock), swayidle, шпаргалка по хоткеям |
 | `.config/sway/outputs-setup.sh`, `doctor.sh` | настройка мониторов под новое железо; проверка здоровья системы |
 | `.config/dms/settings.json` | настройки DMS: виджеты бара (раскладка, VPN, температура, приватность), шрифты, панель управления |
-| `.config/kitty/kitty.conf` | JetBrains Mono, палитра Tokyo Night, прозрачность, вкладки и сплиты |
+| `.config/kitty/kitty.conf` | JetBrains Mono, палитра Tokyo Night, прозрачность, вкладки и сплиты; `Ctrl+C` копирует выделенное (без выделения прерывает), `Ctrl+V` вставляет |
+| `.config/Thunar/uca.xml`, `.config/xfce4/helpers.rc` | файловый менеджер: «Open kitty here», «Copy path» в контекстном меню, терминал kitty |
 | `.config/swappy/config` | редактор скриншотов (стрелки, текст, размытие) |
 | `.config/swaylock/` | запасная блокировка, если DMS не запущен |
 | `home/.tmux.conf`, `home/.zshrc`, `home/.oh-my-zsh/custom/sysadmin.zsh` | tmux, zsh, алиасы сисадмина; fzf / zoxide / eza подключаются сами |
@@ -49,6 +50,7 @@
 | `Super+N` | панель управления DMS (Wi-Fi, Bluetooth, VPN, звук, яркость) |
 | `Super+Shift+N` | центр уведомлений |
 | `Super+Shift+V` | история буфера обмена |
+| `Super+O` | файловый менеджер (Thunar) |
 | `Super+Shift+Q` | закрыть окно |
 | `Super+Shift+C` | перезагрузить конфиг |
 | `Super+Shift+E` / `Super+Shift+P` | меню выключения DMS |

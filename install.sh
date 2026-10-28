@@ -50,6 +50,7 @@ CORE_PKGS=(
     sway-systemd                                   # session target + env for portals
     kitty swaylock swayidle grim swappy jq wl-clipboard brightnessctl libnotify
     pavucontrol network-manager-applet wireplumber pipewire-pulseaudio
+    Thunar thunar-archive-plugin thunar-volman tumbler ffmpegthumbnailer file-roller   # file manager (Super+O)
     xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
     jetbrains-mono-fonts fontawesome-6-free-fonts adw-gtk3-theme
 )
@@ -128,7 +129,7 @@ backup_and_copy_configs() {
     say "Backing up existing configs to $BACKUP"
     run mkdir -p "$BACKUP"
     local d
-    for d in sway swaylock kitty dms swappy waybar rofi dunst swaync; do   # last four: legacy, only backed up
+    for d in sway swaylock kitty dms swappy Thunar xfce4 waybar rofi dunst swaync; do   # last four: legacy, only backed up
         if [ -e "$CFG/$d" ]; then run cp -a "$CFG/$d" "$BACKUP/"; fi
     done
 
@@ -179,6 +180,13 @@ apply_gtk_theme() {
     run gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' || true
 }
 
+# Thunar as the default folder handler (Nautilus stays installed for GNOME sessions)
+apply_file_manager() {
+    [ -e /usr/share/applications/thunar.desktop ] || return 0
+    have xdg-mime || return 0
+    run xdg-mime default thunar.desktop inode/directory || true
+}
+
 setup_outputs() {
     if [ -e "$CFG/sway/config.d/05-outputs.conf" ]; then say "Monitor layout already configured (05-outputs.conf)"; return 0; fi
     if [ -n "${SWAYSOCK:-}" ] && [ "$DRY" = 0 ]; then
@@ -223,7 +231,7 @@ if [ "$PACKAGES" = 1 ]; then
 fi
 
 backup_and_copy_configs
-if [ "$PACKAGES" = 1 ]; then apply_gtk_theme; fi
+if [ "$PACKAGES" = 1 ]; then apply_gtk_theme; apply_file_manager; fi
 if [ "$SHELLSETUP" = 1 ]; then install_shell_extras; fi
 setup_outputs
 verify

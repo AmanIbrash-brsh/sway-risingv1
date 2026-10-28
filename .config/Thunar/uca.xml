@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open kitty here</name>
+	<submenu></submenu>
+	<unique-id>1761600000000001</unique-id>
+	<command>kitty --directory %f</command>
+	<description>Open a kitty terminal in this folder</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>edit-copy</icon>
+	<name>Copy path</name>
+	<submenu></submenu>
+	<unique-id>1761600000000002</unique-id>
+	<command>sh -c 'printf %s "%f" | wl-copy'</command>
+	<description>Copy the full path to the clipboard</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>
