@@ -46,7 +46,7 @@ done
 
 section "Per-machine config"
 [ -f "$CFG/sway/config.d/05-outputs.conf" ] && ok "monitor layout (05-outputs.conf)" || warn "no monitor layout yet: run ~/.config/sway/outputs-setup.sh inside sway"
-for t in grim slurp swaylock swayidle brightnessctl playerctl wl-copy rofi; do have "$t" && ok "$t" || warn "$t missing"; done
+for t in grim swappy jq swaylock swayidle brightnessctl wl-copy notify-send; do have "$t" && ok "$t" || warn "$t missing"; done
 
 printf '\n'; [ "$fails" -eq 0 ] && echo "No failures." || echo "$fails failure(s)."
 exit "$fails"
