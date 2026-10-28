@@ -14,6 +14,8 @@
 | `.config/rofi` | полупрозрачная тема + меню выключения |
 | `.config/dunst` | полупрозрачные уведомления со скруглением |
 | `.config/swaylock` | локскрин с обоями |
+| `.config/kitty/kitty.conf` | прозрачность терминала, чтобы был виден blur |
+| `.config/sway/config.d/40-bar.conf` | запуск waybar (без `sway-config-fedora`) |
 | `wallpapers/` | `original.jpg` (основные), `mono-glow`, `mono-orb`, `mono-smoke`, `mono-grid`, `mono-dusk` |
 
 ### Что было добавлено
@@ -73,4 +75,4 @@ git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising
 
 Флаги: `--yes` (не спрашивать), `--no-packages` (только конфиги), `--no-lock-effects`.
 
-Waybar запускает сам sway (`/usr/share/sway/config.d/90-bar.conf`). Руками его запускать не нужно, иначе будет два бара. Перезагрузка стиля: `pkill -SIGUSR2 waybar`.
+Waybar запускает сам sway (`config.d/40-bar.conf`). Руками его запускать не нужно, иначе будет два бара. Перезагрузка стиля: `pkill -SIGUSR2 waybar`.
