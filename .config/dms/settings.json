@@ -136,7 +136,6 @@
   "audioVisualizerEnabled": true,
   "scrollTitleEnabled": true,
   "dashOptions": {},
-  "batteryChargeLimit": 80,
   "controlCenterColumns": 9,
   "controlCenterWidgets": [
     {

@@ -41,12 +41,14 @@ fc-list 2>/dev/null | grep -qi "JetBrains Mono" && ok "JetBrains Mono" || bad "J
 fc-list 2>/dev/null | grep -qiE "Font ?Awesome" && ok "Font Awesome" || warn "Font Awesome missing (some icons)"
 { [ -d /usr/share/themes/adw-gtk3-dark ] || [ -d "$HOME/.local/share/themes/adw-gtk3-dark" ]; } && ok "adw-gtk3 theme" || warn "adw-gtk3 theme missing (GTK apps will not follow the palette)"
 
-section "Terminal and shell tools"
-for t in kitty zsh tmux git fzf zoxide eza bat fd rg ncdu lazygit; do
-    have "$t" || { [ "$t" = fd ] && have fdfind; } && ok "$t" || warn "$t missing"
+section "Terminal"
+have kitty && ok "kitty" || bad "kitty missing"
+section "Optional shell setup (install.sh --with-shell)"
+opt() { printf '  \033[2m--\033[0m    %s\n' "$*"; }
+for t in zsh tmux git fzf zoxide eza bat fd rg ncdu lazygit; do
+    if have "$t" || { [ "$t" = fd ] && have fdfind; }; then ok "$t"; else opt "$t not installed (optional)"; fi
 done
-[ -d "$HOME/.oh-my-zsh" ] && ok "oh-my-zsh" || warn "oh-my-zsh missing"
-[ "$(basename "${SHELL:-}")" = zsh ] && ok "login shell is zsh" || warn "login shell is not zsh (run: chsh -s $(command -v zsh || echo /usr/bin/zsh))"
+[ -d "$HOME/.oh-my-zsh" ] && ok "oh-my-zsh" || opt "oh-my-zsh not installed (optional)"
 
 section "Per-machine config"
 [ -f "$CFG/sway/config.d/05-outputs.conf" ] && ok "monitor layout (05-outputs.conf)" || warn "no monitor layout yet: run ~/.config/sway/outputs-setup.sh inside sway"

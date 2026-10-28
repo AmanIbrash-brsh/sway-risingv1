@@ -1,0 +1,12 @@
+# Copy to ~/.config/sway/config.d/99-personal.conf. install.sh never touches 99-*.conf files.
+
+# Mouse / touchpad speed (-1 slowest .. 1 fastest)
+input type:pointer {
+    pointer_accel -0.5
+}
+input type:touchpad {
+    pointer_accel 0.3
+}
+
+# Autostart apps (xdg-autostart does not run under sway)
+# exec sh -c 'sleep 5; command -v nextcloud >/dev/null && nextcloud --background'

@@ -216,9 +216,6 @@ include ~/.config/sway/config.d/*.conf
 
 
 
-input "type:keyboard" {
-    xkb_layout "us,ru"
-    xkb_options "grp:alt_shift_toggle,grp_led:scroll"
-}
+# Keyboard, touchpad: see config.d/07-input.conf
 
 
