@@ -88,7 +88,7 @@ output * bg /usr/share/backgrounds/default.jxl fill
     bindsym --to-code $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym --to-code $mod+Shift+e exec dms ipc call powermenu toggle
     #
 # Moving around:
 #

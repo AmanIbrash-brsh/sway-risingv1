@@ -18,6 +18,9 @@
 | `.config/swaylock` | локскрин с обоями |
 | `.config/kitty/kitty.conf` | прозрачность терминала, чтобы был виден blur |
 | `.config/sway/config.d/50-dms.conf` | запуск DMS, blur для его слоёв, хоткей буфера обмена, медиаклавиши (громкость, яркость, плеер) |
+| `home/.tmux.conf` | tmux: префикс `Ctrl+A`, сплиты `|` и `-`, нумерация с 1, тема Tokyo Night |
+| `home/.oh-my-zsh/custom/sysadmin.zsh` | алиасы сисадмина (`ports`, `jce`, `dnfu`, `tm`) и автоподключение fzf / zoxide / eza, если установлены |
+| `.config/sway/config.d/60-autostart.conf` | автозапуск Nextcloud, Remmina и Geary (xdg-autostart в sway не работает) |
 | `.config/dms/settings.json` | настройки DMS: виджеты бара (раскладка, VPN, температура, приватность), шрифты, панель управления |
 | `.config/sway/config.d/40-bar.conf.off` | старый запуск waybar (отключён; переименуйте в `.conf`, чтобы вернуть waybar вместо DMS) |
 | `.config/sway/config.d/05-outputs.conf` | расположение и масштаб мониторов (ноутбук слева, HDMI справа; подгоните под своё железо) |

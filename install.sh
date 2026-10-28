@@ -105,6 +105,15 @@ install_configs() {
     say "Copying configs to $CFG"
     mkdir -p "$CFG"
     cp -a "$REPO/.config/." "$CFG/"
+    if [ -d "$REPO/home" ]; then
+        say "Copying shell/tmux files into $HOME (existing ones are backed up)"
+        local f
+        while IFS= read -r f; do
+            [ -e "$HOME/$f" ] && { mkdir -p "$BACKUP/$(dirname "$f")"; cp -a "$HOME/$f" "$BACKUP/$f"; }
+        done < <(cd "$REPO/home" && find . -type f | sed 's|^\./||')
+        mkdir -p "$HOME/.oh-my-zsh/custom"
+        cp -a "$REPO/home/." "$HOME/"
+    fi
     # waybar is replaced by DMS; a stale 40-bar.conf from an older install would start a second bar
     rm -f "$CFG/sway/config.d/40-bar.conf"
     chmod +x "$CFG"/sway/*.sh "$CFG"/rofi/*.sh 2>/dev/null || true
