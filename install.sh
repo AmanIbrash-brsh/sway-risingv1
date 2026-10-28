@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# sway-rising installer: packages + configs + wallpapers + swaylock-effects.
+# sway-rising installer: packages + DankMaterialShell + configs + wallpapers + swaylock-effects.
 # Usage: ./install.sh [--yes] [--no-packages] [--no-lock-effects]
 set -euo pipefail
 
@@ -27,13 +27,13 @@ ask()  { [ "$YES" = 1 ] && return 0; read -r -p "$1 [y/N] " r; [[ $r =~ ^[yYдД
 # ---------- 1. packages (Fedora) ----------
 install_packages() {
     if ! command -v dnf >/dev/null; then
-        warn "dnf not found. Install manually: swayfx waybar rofi dunst swaylock swayidle kitty grim slurp"
+        warn "dnf not found. Install manually: swayfx dms rofi swaylock swayidle kitty grim slurp"
         warn "wl-clipboard playerctl brightnessctl ImageMagick libnotify pavucontrol network-manager-applet"
         warn "JetBrains Mono and Font Awesome 6 fonts."
         return
     fi
 
-    local want=(waybar rofi SwayNotificationCenter swaylock swayidle kitty grim slurp wl-clipboard playerctl
+    local want=(rofi swaylock swayidle kitty grim slurp wl-clipboard playerctl
                 brightnessctl ImageMagick libnotify pavucontrol network-manager-applet
                 wireplumber fontawesome-6-free-fonts)
     fc-list | grep -qi "JetBrains Mono" || want+=(jetbrains-mono-fonts)
@@ -48,6 +48,16 @@ install_packages() {
             missing+=(swayfx)
         else
             warn "Skipping swayfx: effects will not work on plain sway."
+        fi
+    fi
+
+    if ! rpm -q dms >/dev/null 2>&1; then
+        say "DankMaterialShell (bar, launcher, control center, notifications) comes from the avengemedia/dms COPR"
+        if ask "Enable COPR avengemedia/dms and install dms?"; then
+            sudo dnf copr enable -y avengemedia/dms
+            missing+=(dms)
+        else
+            warn "Skipping dms: no bar / control center / notifications will be started."
         fi
     fi
 
@@ -88,13 +98,15 @@ install_configs() {
     say "Backing up existing configs to $BACKUP"
     mkdir -p "$BACKUP"
     local d
-    for d in sway waybar rofi dunst swaync swaylock kitty; do
+    for d in sway waybar rofi dunst swaync swaylock kitty quickshell; do
         [ -e "$CFG/$d" ] && cp -a "$CFG/$d" "$BACKUP/"
     done
 
     say "Copying configs to $CFG"
     mkdir -p "$CFG"
     cp -a "$REPO/.config/." "$CFG/"
+    # waybar is replaced by DMS; a stale 40-bar.conf from an older install would start a second bar
+    rm -f "$CFG/sway/config.d/40-bar.conf"
     chmod +x "$CFG"/sway/*.sh "$CFG"/rofi/*.sh 2>/dev/null || true
 
     say "Copying wallpapers to $WALLS"

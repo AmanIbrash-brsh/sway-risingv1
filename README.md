@@ -1,6 +1,6 @@
 # sway-rising
 
-Монохромный «стеклянный» райс для **SwayFX 0.6**: матовый blur, скруглённые углы, мягкое свечение у активного окна, плавающие «острова» в waybar, полупрозрачные rofi / dunst / swaylock.
+Монохромный «стеклянный» райс для **SwayFX 0.6**: матовый blur, скруглённые углы, мягкое свечение у активного окна и **DankMaterialShell** (бар, лаунчер, панель управления с Wi-Fi / Bluetooth / VPN, уведомления) поверх sway.
 
 ## Что внутри
 
@@ -17,7 +17,8 @@
 | `.config/dunst` | старые уведомления (не используются, оставлены для отката) |
 | `.config/swaylock` | локскрин с обоями |
 | `.config/kitty/kitty.conf` | прозрачность терминала, чтобы был виден blur |
-| `.config/sway/config.d/40-bar.conf` | запуск waybar (без `sway-config-fedora`) |
+| `.config/sway/config.d/50-dms.conf` | запуск DMS, blur / скругления для его слоёв, хоткей буфера обмена |
+| `.config/sway/config.d/40-bar.conf.off` | старый запуск waybar (отключён; переименуйте в `.conf`, чтобы вернуть waybar вместо DMS) |
 | `.config/sway/config.d/05-outputs.conf` | расположение и масштаб мониторов (ноутбук слева, HDMI справа; подгоните под своё железо) |
 | `.config/sway/config.d/06-mouse.conf` | чувствительность мыши |
 | `wallpapers/` | `original.jpg` (основные), `mono-glow`, `mono-orb`, `mono-smoke`, `mono-grid`, `mono-dusk` |
@@ -38,7 +39,10 @@
 | Клавиши | Действие |
 |---|---|
 | `Super+Return` | терминал (kitty) |
-| `Super+D` | запуск приложений (rofi) |
+| `Super+D` | лаунчер DMS |
+| `Super+N` | панель управления DMS (Wi-Fi, Bluetooth, VPN, звук, яркость) |
+| `Super+Shift+N` | центр уведомлений |
+| `Super+Shift+V` | история буфера обмена |
 | `Super+Shift+Q` | закрыть окно |
 | `Super+Shift+C` | перезагрузить конфиг |
 | `Super+Shift+E` | выйти из sway |
@@ -79,4 +83,4 @@ git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising
 
 Флаги: `--yes` (не спрашивать), `--no-packages` (только конфиги), `--no-lock-effects`.
 
-Waybar запускает сам sway (`config.d/40-bar.conf`). Руками его запускать не нужно, иначе будет два бара. Перезагрузка стиля: `pkill -SIGUSR2 waybar`.
+DMS запускается из `config.d/50-dms.conf`. Руками его запускать не нужно. Диагностика: `dms doctor`. Waybar, swaync и dunst в репозитории оставлены как запасной вариант и в `install.sh` больше не ставятся.

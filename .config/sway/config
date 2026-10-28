@@ -75,7 +75,7 @@ output * bg /usr/share/backgrounds/default.jxl fill
     bindsym --to-code $mod+Shift+q kill
 
     # Start your launcher
-    bindsym --to-code $mod+d exec $menu
+    bindsym --to-code $mod+d exec dms ipc call spotlight toggle
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
