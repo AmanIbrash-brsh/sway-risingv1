@@ -33,7 +33,7 @@ install_packages() {
         return
     fi
 
-    local want=(waybar rofi dunst swaylock swayidle kitty grim slurp wl-clipboard playerctl
+    local want=(waybar rofi SwayNotificationCenter swaylock swayidle kitty grim slurp wl-clipboard playerctl
                 brightnessctl ImageMagick libnotify pavucontrol network-manager-applet
                 wireplumber fontawesome-6-free-fonts)
     fc-list | grep -qi "JetBrains Mono" || want+=(jetbrains-mono-fonts)
@@ -88,7 +88,7 @@ install_configs() {
     say "Backing up existing configs to $BACKUP"
     mkdir -p "$BACKUP"
     local d
-    for d in sway waybar rofi dunst swaylock kitty; do
+    for d in sway waybar rofi dunst swaync swaylock kitty; do
         [ -e "$CFG/$d" ] && cp -a "$CFG/$d" "$BACKUP/"
     done
 

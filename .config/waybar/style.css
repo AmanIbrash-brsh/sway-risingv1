@@ -18,7 +18,7 @@ window#waybar { background: transparent; color: @text; }
 
 /* glass pills: translucent so swayfx blur shows through */
 #workspaces, #window, #clock, #language, #cpu, #memory, #pulseaudio, #network, #battery,
-#tray, #mode, #custom-power, #backlight, #idle_inhibitor, #temperature, #mpris {
+#tray, #mode, #custom-power, #custom-notification, #backlight, #idle_inhibitor, #temperature, #mpris {
     background: alpha(@base, 0.55);
     border: 1px solid alpha(@text, 0.08);
     border-radius: 14px;
@@ -58,6 +58,7 @@ window#waybar.empty #window { background: transparent; border-color: transparent
 #battery.warning:not(.charging) { color: @yellow; }
 #battery.critical:not(.charging) { color: @red; animation: blink 1s steps(2) infinite; }
 #temperature.critical { color: @red; }
+#custom-notification { padding: 0 14px; }
 #custom-power { padding: 0 14px; }
 #custom-power:hover { background: @red; color: @base; border-color: @red; }
 

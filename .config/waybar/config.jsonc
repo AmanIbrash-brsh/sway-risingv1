@@ -8,7 +8,7 @@
     "spacing": 6,
     "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
     "modules-center": ["clock", "mpris"],
-    "modules-right": ["idle_inhibitor", "sway/language", "group/hw", "backlight", "pulseaudio", "network", "battery", "tray", "custom/power"],
+    "modules-right": ["idle_inhibitor", "sway/language", "group/hw", "backlight", "pulseaudio", "network", "battery", "tray", "custom/notification", "custom/power"],
 
     "sway/workspaces": { "disable-scroll": true, "all-outputs": true, "format": "{icon}", "format-icons": {"1": "", "2": "", "3": "", "4": "", "5": "", "urgent": "", "default": ""} },
     "sway/window": { "max-length": 45, "format": "{title}", "rewrite": { "(.*) — Mozilla Firefox": "  $1", "(.*) - Chromium": "  $1" } },
@@ -42,5 +42,25 @@
         "format-icons": ["", "", "", "", ""]
     },
     "tray": { "spacing": 8 },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "\uf0f3<span foreground='#f7768e'><sup>\uf111</sup></span>",
+            "none": "\uf0f3",
+            "dnd-notification": "\uf1f6<span foreground='#f7768e'><sup>\uf111</sup></span>",
+            "dnd-none": "\uf1f6",
+            "inhibited-notification": "\uf0f3<span foreground='#f7768e'><sup>\uf111</sup></span>",
+            "inhibited-none": "\uf0f3",
+            "dnd-inhibited-notification": "\uf1f6<span foreground='#f7768e'><sup>\uf111</sup></span>",
+            "dnd-inhibited-none": "\uf1f6"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
     "custom/power": { "format": "", "tooltip": false, "on-click": "~/.config/rofi/powermenu.sh" }
 }
