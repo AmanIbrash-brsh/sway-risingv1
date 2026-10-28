@@ -22,6 +22,10 @@ if have dms; then
     pgrep -x dms >/dev/null && ok "dms is running" || { [ -n "${SWAYSOCK:-}" ] && bad "dms is not running" || warn "dms not running (not in session)"; }
 else bad "dms not installed"; fi
 [ -f "$CFG/dms/settings.json" ] && ok "DMS settings present" || warn "no DMS settings yet"
+if have dms && pgrep -x dms >/dev/null; then
+    w=$(dms ipc call wallpaper get 2>/dev/null | head -1)
+    case $w in /*) ok "wallpaper set in DMS ($(basename "$w"))";; *) warn "no wallpaper chosen in DMS yet (firstrun.sh sets one at the next sway start)";; esac
+fi
 
 section "Session / portals"
 if systemctl --user is-active sway-session.target >/dev/null 2>&1; then ok "sway-session.target active"
@@ -46,7 +50,7 @@ done
 
 section "Per-machine config"
 [ -f "$CFG/sway/config.d/05-outputs.conf" ] && ok "monitor layout (05-outputs.conf)" || warn "no monitor layout yet: run ~/.config/sway/outputs-setup.sh inside sway"
-for t in grim swappy jq swaylock swayidle brightnessctl wl-copy notify-send; do have "$t" && ok "$t" || warn "$t missing"; done
+for t in nautilus grim swappy jq swaylock swayidle brightnessctl wl-copy notify-send; do have "$t" && ok "$t" || warn "$t missing"; done
 
 printf '\n'; [ "$fails" -eq 0 ] && echo "No failures." || echo "$fails failure(s)."
 exit "$fails"

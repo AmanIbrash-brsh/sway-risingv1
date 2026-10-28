@@ -10,6 +10,7 @@
 #       --no-dms       do not install DankMaterialShell
 #       --no-shell     skip zsh / oh-my-zsh / tmux / CLI tools
 #       --with-tools   also install sysadmin tools (nmap, tcpdump, mtr, jq, ansible, btop)
+#       --with-apps    also install the everyday apps (gimp, keepassxc, obs, ... and the flatpaks)
 #       --force-shell  overwrite an existing ~/.zshrc (the old one is backed up)
 #   -h, --help
 set -euo pipefail
@@ -20,7 +21,7 @@ WALLS=$HOME/.local/share/backgrounds
 STAMP=$(date +%F-%H%M%S)
 BACKUP=$HOME/rice-backup-$STAMP
 
-YES=0; DRY=0; CHECK=0; PACKAGES=1; DMS=1; SHELLSETUP=1; TOOLS=0; FORCE_SHELL=0
+YES=0; DRY=0; CHECK=0; PACKAGES=1; DMS=1; SHELLSETUP=1; TOOLS=0; APPS=0; FORCE_SHELL=0
 for a in "$@"; do
     case $a in
         -y|--yes) YES=1 ;;
@@ -30,8 +31,9 @@ for a in "$@"; do
         --no-dms) DMS=0 ;;
         --no-shell) SHELLSETUP=0 ;;
         --with-tools) TOOLS=1 ;;
+        --with-apps) APPS=1 ;;
         --force-shell) FORCE_SHELL=1 ;;
-        -h|--help) sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        -h|--help) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $a (try --help)" >&2; exit 1 ;;
     esac
 done
@@ -47,15 +49,22 @@ NOTES=()    # follow-up hints for the user
 
 # ---------------------------------------------------------------- packages (Fedora names, all verified with dnf)
 CORE_PKGS=(
-    sway-systemd                                   # session target + env for portals
+    sway-systemd dbus-tools                        # session target + env for portals
     kitty swaylock swayidle grim swappy jq wl-clipboard brightnessctl libnotify
-    pavucontrol network-manager-applet wireplumber pipewire-pulseaudio
+    pavucontrol network-manager-applet nm-connection-editor wireplumber pipewire-pulseaudio
     nautilus                                       # file manager (Super+O)
     xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
     jetbrains-mono-fonts fontawesome-6-free-fonts adw-gtk3-theme
 )
 SHELL_PKGS=(zsh tmux git curl fzf zoxide eza bat fd-find ripgrep ncdu fastfetch)
 TOOLS_PKGS=(nmap tcpdump mtr jq btop ansible)
+# --with-apps: everyday apps. docker-ce and VS Code come from third-party repos and are not installed here.
+APP_PKGS=(geary gimp keepassxc libreoffice-writer libreoffice-calc libreoffice-impress mpv obs-studio
+          qbittorrent shotcut yt-dlp godot rclone gparted)
+APP_FLATPAKS=(org.telegram.desktop com.google.Chrome com.nextcloud.desktopclient.nextcloud org.remmina.Remmina
+              com.github.tchx84.Flatseal io.dbeaver.DBeaverCommunity com.discordapp.Discord
+              com.moonlight_stream.Moonlight org.prismlauncher.PrismLauncher com.freerdp.FreeRDP
+              com.mattjakeman.ExtensionManager)
 
 check_fedora() {
     local ID="" ID_LIKE=""
@@ -109,6 +118,15 @@ install_lazygit() {
     rm -rf "$tmp"
 }
 
+install_apps() {
+    say "Installing everyday apps (${#APP_PKGS[@]} rpm, ${#APP_FLATPAKS[@]} flatpak)"
+    dnf_install "${APP_PKGS[@]}"
+    if ! have flatpak; then dnf_install flatpak; fi
+    run sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || true
+    run sudo flatpak install -y --noninteractive flathub "${APP_FLATPAKS[@]}" || FAILED+=("some flatpaks")
+    NOTES+=("Not installed (third-party repos): docker-ce, VS Code, tailscale. Add their repos if you need them.")
+}
+
 # ---------------------------------------------------------------- zsh / oh-my-zsh
 install_shell_extras() {
     local zsh_custom=$HOME/.oh-my-zsh/custom p
@@ -157,19 +175,13 @@ backup_and_copy_configs() {
     install_wallpapers
 }
 
-# Wallpapers are managed by DMS (Settings > Wallpaper); we only drop the shipped favourites into its folder
+# Wallpapers are managed by DMS; we only drop the shipped favourites into its folder.
+# The first sway start (firstrun.sh) picks one in DMS if none is chosen yet.
 install_wallpapers() {
     compgen -G "$REPO/wallpapers/*" >/dev/null || return 0
     say "Copying wallpapers to $WALLS"
     run mkdir -p "$WALLS"
     if [ "$DRY" = 1 ]; then echo "   [dry-run] cp -n wallpapers/* $WALLS/"; else cp -n "$REPO"/wallpapers/* "$WALLS/"; fi
-    local cur=""
-    if [ -n "${SWAYSOCK:-}" ] && have dms && pgrep -x dms >/dev/null; then cur=$(dms ipc call wallpaper get 2>/dev/null | head -1); fi
-    if [ "$DRY" = 0 ] && [ -n "${SWAYSOCK:-}" ] && pgrep -x dms >/dev/null && [ -z "$cur" ] && [ -f "$WALLS/kitty.jpg" ]; then
-        dms ipc call wallpaper set "$WALLS/kitty.jpg" >/dev/null 2>&1 || true      # only when no wallpaper is chosen yet
-    elif [ -z "$cur" ]; then
-        NOTES+=("Wallpaper: pick one in DMS (Super+N > settings > Wallpaper); the shipped ones are in $WALLS")
-    fi
 }
 
 # GTK theme: adw-gtk3 (DMS recolors it); only when the user has no choice of their own yet
@@ -222,6 +234,7 @@ if [ "$PACKAGES" = 1 ]; then
         install_lazygit
     fi
     if [ "$TOOLS" = 1 ]; then say "Installing sysadmin tools"; dnf_install "${TOOLS_PKGS[@]}"; fi
+    if [ "$APPS" = 1 ]; then install_apps; fi
 fi
 
 backup_and_copy_configs

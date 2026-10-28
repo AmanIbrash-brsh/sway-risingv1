@@ -269,5 +269,7 @@
   "monoFontFamily": "JetBrains Mono",
   "displayFontFamily": "JetBrains Mono",
   "fontWeight": 300,
-  "fontScale": 1
+  "fontScale": 1,
+  "currentThemeName": "pink",
+  "wallpaperFillMode": "Fill"
 }

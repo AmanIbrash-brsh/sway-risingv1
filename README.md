@@ -17,7 +17,7 @@
 | `.config/sway/config.d/60-autostart.conf` | автозапуск Nextcloud, Remmina и Geary (xdg-autostart в sway не работает) |
 | `.config/sway/screenshot.sh` | все режимы скриншотов (см. ниже) |
 | `.config/sway/{lock,idle,cheatsheet}.sh` | блокировка (DMS, запасной swaylock), swayidle, шпаргалка по хоткеям |
-| `.config/sway/outputs-setup.sh`, `doctor.sh` | настройка мониторов под новое железо; проверка здоровья системы |
+| `.config/sway/outputs-setup.sh`, `firstrun.sh`, `doctor.sh` | раскладка мониторов под новое железо; первый запуск (обои, мониторы); проверка здоровья системы |
 | `.config/dms/settings.json` | настройки DMS: виджеты бара (раскладка, VPN, температура, приватность), шрифты, панель управления |
 | `.config/kitty/kitty.conf` | JetBrains Mono, палитра Tokyo Night, прозрачность, вкладки (`Ctrl+Shift+←/→`) и сплиты (`Ctrl+Alt+стрелки`); `Ctrl+C` копирует выделенное (без выделения прерывает), `Ctrl+V` вставляет |
 | `.config/swappy/config` | редактор скриншотов (стрелки, текст, размытие) |
@@ -74,30 +74,33 @@
 На свежей Fedora (Workstation или любой вариант с `git`):
 
 ```sh
-git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising && ./install.sh
+git clone git@git.ibrash.duckdns.org:aibrash/sway-rising.git && cd sway-rising && ./install.sh --with-apps
 ```
 
 Репозиторий клонируется по ssh, поэтому на новой машине сначала нужен ваш ключ (`~/.ssh/id_ed25519`) или ключ, добавленный на git-сервер.
 
-Скрипт спрашивает подтверждение перед каждым COPR и больше ни о чём не спрашивает. Для полностью автоматического режима: `./install.sh --yes`.
+Скрипт спрашивает подтверждение перед каждым COPR и больше ни о чём не спрашивает. Без вопросов вообще: добавьте `--yes`. Без `--with-apps` ставится только сам райс и инструменты терминала.
 
 Что он делает:
-1. Ставит пакеты через `dnf`: сессия sway (`sway-systemd`, порталы), kitty, swaylock/swayidle, grim, swappy (аннотации скриншотов), шрифты JetBrains Mono и Font Awesome, тема `adw-gtk3`.
+1. Ставит пакеты через `dnf`: сессия sway (`sway-systemd`, порталы), kitty, nautilus, swaylock/swayidle, grim, swappy (аннотации скриншотов), шрифты JetBrains Mono и Font Awesome, тема `adw-gtk3`.
 2. Подключает COPR `swayfx/swayfx` и `avengemedia/dms` и ставит SwayFX и DankMaterialShell.
 3. Ставит CLI: zsh, tmux, fzf, zoxide, eza, bat, fd, ripgrep, ncdu, fastfetch, lazygit (бинарник с проверкой суммы), клонирует oh-my-zsh с плагинами. Опция `--with-tools` добавляет nmap, tcpdump, mtr, jq, btop, ansible.
-4. **Делает бэкап** ваших конфигов в `~/rice-backup-<дата>` и копирует конфиги, обои (в `~/.local/share/backgrounds`), tmux и алиасы. Ваш `~/.zshrc` не трогает (его заменит только `--force-shell`).
-5. Включает тему `adw-gtk3-dark` и проверяет конфиг (`sway -C`).
+4. С `--with-apps`: gimp, keepassxc, libreoffice, mpv, obs-studio, qbittorrent, shotcut, yt-dlp, godot, rclone, gparted, geary и ваши flatpak (Telegram, Chrome, Nextcloud, Remmina, DBeaver, Discord и другие).
+5. **Делает бэкап** ваших конфигов в `~/rice-backup-<дата>` и копирует конфиги, обои (в `~/.local/share/backgrounds`), tmux и алиасы. Ваш `~/.zshrc` не трогает (его заменит только `--force-shell`).
+6. Включает тему `adw-gtk3-dark` и проверяет конфиг (`sway -C`).
 
-После установки: выйти и выбрать на экране входа сессию **Sway**. Внутри сессии один раз выполнить
+После установки: выйти и выбрать на экране входа сессию **Sway**. При первом запуске `firstrun.sh` сам выберет обои в DMS и сгенерирует раскладку мониторов (ноутбук слева, внешние справа, масштаб подбирается по разрешению). Результат можно поправить: `~/.config/sway/outputs-setup.sh` (с вопросами) или файл `~/.config/sway/config.d/05-outputs.conf`.
 
-```sh
-~/.config/sway/outputs-setup.sh   # раскладка и масштаб мониторов (ноутбук слева, внешний справа)
-```
+Тема DMS (цвета, шрифты, виджеты бара, прозрачность) хранится в `.config/dms/settings.json`: если вы меняете её в интерфейсе DMS, скопируйте файл обратно в репозиторий, чтобы изменения переехали на другие машины.
 
-Файл раскладки мониторов намеренно не копируется: на другом железе другие имена выходов. В репозитории лежит только пример `05-outputs.conf.example`.
+**Что не переезжает** (личное или с отдельными репозиториями):
+- `~/.ssh/config` и ключи, база KeePassXC, входы в Nextcloud, Telegram и браузеры;
+- `docker-ce` и VS Code (ставятся из сторонних репозиториев), `tailscale`;
+- город для виджета погоды в DMS, подключения NetworkManager и VPN;
+- файл `05-outputs.conf` (свой на каждой машине).
 
-Проверка здоровья в любой момент: `./install.sh --check` (то же самое: `~/.config/sway/doctor.sh`). Показывает, что установлено, что работает, а что нет (DMS, порталы, шрифты, инструменты, раскладка мониторов).
+Проверка здоровья в любой момент: `./install.sh --check` (то же самое: `~/.config/sway/doctor.sh`). Показывает, что установлено, что работает, а что нет (DMS, порталы, шрифты, инструменты, раскладка мониторов, обои).
 
-Флаги: `--yes`, `--dry-run` (показать действия, ничего не менять), `--check`, `--no-packages`, `--no-dms`, `--no-shell`, `--with-tools`, `--force-shell`. Можно запускать повторно.
+Флаги: `--yes`, `--dry-run` (показать действия, ничего не менять), `--check`, `--no-packages`, `--no-dms`, `--no-shell`, `--with-tools`, `--with-apps`, `--force-shell`. Можно запускать повторно.
 
 DMS запускается из `config.d/50-dms.conf`, руками его запускать не нужно. Диагностика самого DMS: `dms doctor`.
